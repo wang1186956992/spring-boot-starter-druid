@@ -10,8 +10,8 @@
     <packaging>jar</packaging>
 
 
-    <!--<name>druid</name>-->
-    <!--<description>Spring boot druid starter </description>-->
+    <name>druid</name>
+    <description>Spring boot druid starter </description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
