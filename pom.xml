@@ -10,6 +10,16 @@
     <packaging>jar</packaging>
 
 
+    <!--<name>druid</name>-->
+    <!--<description>Spring boot druid starter </description>-->
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.4.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
     <build>
         <plugins>
             <plugin>
