@@ -1,4 +1,4 @@
-package com.learn.druid;
+package com.learn.druid.properties;
 
 import com.alibaba.druid.filter.Filter;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +11,7 @@ import java.util.Properties;
  * Created by xuejike on 2017/6/22.
  */
 
-@ConfigurationProperties("bd.datasource.druid")
+@ConfigurationProperties("data.datasource.druid")
 public class DruidProperties {
     /**
      * 开启Druid连接池

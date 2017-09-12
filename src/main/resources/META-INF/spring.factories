@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.learn.druid.DruidConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.learn.druid.config.DruidConfig
