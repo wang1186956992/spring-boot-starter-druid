@@ -3,16 +3,19 @@ package com.learn.druid.config;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import com.learn.druid.annotation.DruidAutoConfig;
 import com.learn.druid.lambdaInterface.Call;
 import com.learn.druid.properties.DruidProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -22,7 +25,10 @@ import java.util.Properties;
  * Created by yf003 on 2017/8/17.
  */
 
-@DruidAutoConfig
+@Configuration
+@ConfigurationProperties
+@ConditionalOnClass(DruidDataSource.class)
+@EnableConfigurationProperties(DruidProperties.class)
 public class DruidConfig implements ConfigProperties {
 
     protected static Logger logger= LoggerFactory.getLogger(DruidConfig.class);
