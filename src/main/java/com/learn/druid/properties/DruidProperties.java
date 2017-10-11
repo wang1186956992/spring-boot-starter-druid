@@ -11,7 +11,7 @@ import java.util.Properties;
  * Created by xuejike on 2017/6/22.
  */
 
-@ConfigurationProperties("data.datasource.druid")
+@ConfigurationProperties("bd.datasource.druid")
 public class DruidProperties {
     /**
      * 开启Druid连接池

@@ -32,7 +32,7 @@ public class DruidConfig implements ConfigProperties {
     DruidProperties properties;
 
     @Bean
-    @ConditionalOnProperty(prefix = "data.datasource.druid",value = "enabled",havingValue = "true")
+    @ConditionalOnProperty(prefix = "bd.datasource.druid",value = "enabled",havingValue = "true")
     public DataSource dataSource(){
         logger.info("init Druid DruidDataSource Configuration ");
         DruidDataSource dataSource = new DruidDataSource();
@@ -64,7 +64,7 @@ public class DruidConfig implements ConfigProperties {
 
 
     @Bean
-    @ConditionalOnProperty(prefix = "data.datasource.druid",value = "monitor-enable",havingValue = "true")
+    @ConditionalOnProperty(prefix = "bd.datasource.druid",value = "monitor-enable",havingValue = "true")
     public ServletRegistrationBean druidStatViewServlet(){
         logger.info("init Druid Servlet Configuration ");
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet()
@@ -100,7 +100,7 @@ public class DruidConfig implements ConfigProperties {
      * @return
      */
     @Bean
-    @ConditionalOnProperty(prefix = "data.datasource.druid",value = "monitor-enable",havingValue = "true")
+    @ConditionalOnProperty(prefix = "bd.datasource.druid",value = "monitor-enable",havingValue = "true")
     public FilterRegistrationBean druidStatFilter(){
         logger.info("init Druid druidStatFilter Configuration ");
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
