@@ -35,7 +35,7 @@ public class DruidConfig implements ConfigProperties {
 
 
     @Autowired
-    DruidProperties properties;
+    DruidProperties druidProperties;
 
     @Bean
     @ConditionalOnProperty(prefix = "bd.datasource.druid",value = "enabled",havingValue = "true")
@@ -43,27 +43,27 @@ public class DruidConfig implements ConfigProperties {
         logger.info("init Druid DruidDataSource Configuration ");
         DruidDataSource dataSource = new DruidDataSource();
 
-        setProperties(properties.getName(),dataSource::setName);
-        setProperties(properties.getUrl(),dataSource::setUrl);
-        setProperties(properties.getUsername(),dataSource::setUsername);
-        setProperties(properties.getPassword(),dataSource::setPassword);
-        setProperties(properties.getMaxActive(),dataSource::setMaxActive);
-        setProperties(properties.getMinIdle(), dataSource::setMinIdle);
-        setProperties(properties.getMaxWait(), dataSource::setMaxWait);
-        setProperties(properties.getPoolPreparedStatements(), dataSource::setPoolPreparedStatements);
-        setProperties(properties.getMaxPoolPreparedStatementPerConnectionSize(), dataSource::setMaxPoolPreparedStatementPerConnectionSize);
-        setProperties(properties.getValidationQuery(), dataSource::setValidationQuery);
-        setProperties(properties.getValidationQueryTimeout(), dataSource::setValidationQueryTimeout);
-        setProperties(properties.getTestOnBorrow(), dataSource::setTestOnBorrow);
-        setProperties(properties.getTestOnReturn(), dataSource::setTestOnReturn);
-        setProperties(properties.getTestWhileIdle(), dataSource::setTestWhileIdle);
+        setDataProperties(druidProperties.getName(),dataSource::setName);
+        setDataProperties(druidProperties.getUrl(),dataSource::setUrl);
+        setDataProperties(druidProperties.getUsername(),dataSource::setUsername);
+        setDataProperties(druidProperties.getPassword(),dataSource::setPassword);
+        setDataProperties(druidProperties.getMaxActive(),dataSource::setMaxActive);
+        setDataProperties(druidProperties.getMinIdle(), dataSource::setMinIdle);
+        setDataProperties(druidProperties.getMaxWait(), dataSource::setMaxWait);
+        setDataProperties(druidProperties.getPoolPreparedStatements(), dataSource::setPoolPreparedStatements);
+        setDataProperties(druidProperties.getMaxPoolPreparedStatementPerConnectionSize(), dataSource::setMaxPoolPreparedStatementPerConnectionSize);
+        setDataProperties(druidProperties.getValidationQuery(), dataSource::setValidationQuery);
+        setDataProperties(druidProperties.getValidationQueryTimeout(), dataSource::setValidationQueryTimeout);
+        setDataProperties(druidProperties.getTestOnBorrow(), dataSource::setTestOnBorrow);
+        setDataProperties(druidProperties.getTestOnReturn(), dataSource::setTestOnReturn);
+        setDataProperties(druidProperties.getTestWhileIdle(), dataSource::setTestWhileIdle);
 
         //设置数据源特殊属性
         dataSource = setDataSourceSpecialProperties(dataSource);
 
         createConnectProperties();
 
-        setProperties(properties.getConnectionProperties(), dataSource::setConnectProperties);
+        setDataProperties(druidProperties.getConnectionProperties(), dataSource::setConnectProperties);
 
         return dataSource;
     }
@@ -74,26 +74,26 @@ public class DruidConfig implements ConfigProperties {
     public ServletRegistrationBean druidStatViewServlet(){
         logger.info("init Druid Servlet Configuration ");
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet()
-                ,properties.getMonitorPath());
+                ,druidProperties.getMonitorPath());
 
-        setProperties(properties.getMonitorPath(),servletRegistrationBean::addUrlMappings);
+        setDataProperties(druidProperties.getMonitorPath(),servletRegistrationBean::addUrlMappings);
 
         //白名单（允许访问IP）
-        setProperties(properties.getMonitorAllow(),v->servletRegistrationBean.addInitParameter("allow",v));
+        setDataProperties(druidProperties.getMonitorAllow(),v->servletRegistrationBean.addInitParameter("allow",v));
 
         //IP黑名单 (存在共同时，deny优先于allow) : 如果满足deny的话提示:Sorry, you are not permitted to view this page.
-        setProperties(properties.getMonitorDeny(),v->servletRegistrationBean.addInitParameter("deny",v));
+        setDataProperties(druidProperties.getMonitorDeny(),v->servletRegistrationBean.addInitParameter("deny",v));
 
 
         //登录查看信息的账号密码.
 
-        setProperties(properties.getMonitorUserName(),v->servletRegistrationBean.addInitParameter("loginUsername",v));
+        setDataProperties(druidProperties.getMonitorUserName(),v->servletRegistrationBean.addInitParameter("loginUsername",v));
 
-        setProperties(properties.getMonitorPassword(),v->servletRegistrationBean.addInitParameter("loginPassword",v));
+        setDataProperties(druidProperties.getMonitorPassword(),v->servletRegistrationBean.addInitParameter("loginPassword",v));
 
 
         //是否能够重置数据.
-        setProperties(properties.getMonitorResetEnable(),v->{
+        setDataProperties(druidProperties.getMonitorResetEnable(),v->{
             servletRegistrationBean.addInitParameter("resetEnable",String.valueOf(v));
         });
 
@@ -112,10 +112,10 @@ public class DruidConfig implements ConfigProperties {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
 
         //添加过滤规则.
-        setProperties(properties.getMonitorFilterUrl(),filterRegistrationBean::addUrlPatterns);
+        setDataProperties(druidProperties.getMonitorFilterUrl(),filterRegistrationBean::addUrlPatterns);
 
         //添加不需要忽略的格式信息.
-        setProperties(properties.getMonitorFilterExclusions(),v->filterRegistrationBean.addInitParameter("exclusions",v));
+        setDataProperties(druidProperties.getMonitorFilterExclusions(),v->filterRegistrationBean.addInitParameter("exclusions",v));
 
         return filterRegistrationBean;
 
@@ -127,25 +127,25 @@ public class DruidConfig implements ConfigProperties {
 
 
     protected DruidDataSource setDataSourceSpecialProperties(DruidDataSource dataSource){
-        if (properties.getTimeBetweenEvictionRunsMillis()!=null){
-            dataSource.setTimeBetweenEvictionRunsMillis(properties.getTimeBetweenEvictionRunsMillis());
+        if (druidProperties.getTimeBetweenEvictionRunsMillis()!=null){
+            dataSource.setTimeBetweenEvictionRunsMillis(druidProperties.getTimeBetweenEvictionRunsMillis());
         }
-        if (properties.getMinEvictableIdleTimeMillis()!=null){
-            dataSource.setMinEvictableIdleTimeMillis(properties.getMinEvictableIdleTimeMillis());
+        if (druidProperties.getMinEvictableIdleTimeMillis()!=null){
+            dataSource.setMinEvictableIdleTimeMillis(druidProperties.getMinEvictableIdleTimeMillis());
         }
-        if (properties.getConnectionInitSqls()!=null){
-            dataSource.setConnectionInitSqls(properties.getConnectionInitSqls());
+        if (druidProperties.getConnectionInitSqls()!=null){
+            dataSource.setConnectionInitSqls(druidProperties.getConnectionInitSqls());
         }
-        if (properties.getFilters()!=null){
+        if (druidProperties.getFilters()!=null){
             try {
-                dataSource.setFilters(properties.getFilters());
+                dataSource.setFilters(druidProperties.getFilters());
             } catch (SQLException e) {
 //                e.printStackTrace();
                 logger.error("数据库连接池Filters设置失败",e);
             }
         }
-        if(properties.getProxyFilters()!=null){
-            dataSource.setProxyFilters(properties.getProxyFilters());
+        if(druidProperties.getProxyFilters()!=null){
+            dataSource.setProxyFilters(druidProperties.getProxyFilters());
         }
 
         return dataSource;
@@ -158,19 +158,15 @@ public class DruidConfig implements ConfigProperties {
         Properties properties = new Properties();
         properties.put("druid.stat.mergeSql",true);
         properties.put("druid.stat.slowSqlMillis",3000);
-        this.properties.setConnectionProperties(properties);
+        this.druidProperties.setConnectionProperties(properties);
     }
+
 
 
 
 
     @Override
-    public <T> void setProperties(T val, Call<T> call) {
-        if(val != null){
-            call.call(val);
-        }
+    public <T> void setDataProperties(T val, Call<T> call) {
+
     }
-
-
-
 }

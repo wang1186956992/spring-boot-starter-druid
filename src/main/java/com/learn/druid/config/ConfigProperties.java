@@ -7,7 +7,7 @@ import com.learn.druid.lambdaInterface.Call;
  */
 public interface ConfigProperties {
 
-    <T>void setProperties(T val, Call<T> call);
+    <T>void setDataProperties(T val, Call<T> call);
 
 
 
